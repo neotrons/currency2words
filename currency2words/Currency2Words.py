@@ -2,15 +2,18 @@ from .utils import CURRENCY_FORMS
 from num2words import CONVERTER_CLASSES
 from num2words.currency import parse_currency_parts
 
+DEFAULT_FORMATS = ['text', 'invoice']
+
 
 class Currency2Words(object):
 
-    def __init__(self, number, lang='es', currency='PEN', separator='con'):
+    def __init__(self, number, lang='es', currency='PEN', separator='con', format=DEFAULT_FORMATS[0]):
         self.number = number
         self.lang = lang
         self.lang_object = self.get_lang_object(lang)
         self.currency = currency
         self.separator = separator.strip()
+        self.format = format
         self.integer_part, self.decimal_part, self.negative = parse_currency_parts(number)
         self.custom_currency_form = None
 
@@ -43,7 +46,7 @@ class Currency2Words(object):
             raise NotImplementedError()
         return CONVERTER_CLASSES[lang]
 
-    def cent_text(self):
+    def format_text(self):
         currency_word, cent_word = self.get_currency_form()
         result = '%s%s %s %s %s %s' % (
             self.get_negword(),
@@ -55,7 +58,24 @@ class Currency2Words(object):
         )
         return result
 
+    def invoice_cent_text(self):
+        return '%s/100' % (self.decimal_part,)
+
+    def format_invoice(self):
+        currency_word, cent_word = self.get_currency_form()
+        result = '%s%s %s %s %s' % (
+            self.get_negword(),
+            self.get_words_integer_part(),
+            self.separator,
+            self.invoice_cent_text(),
+            self.lang_object.pluralize(self.integer_part, currency_word),
+        )
+        return result
+
+    def get_format(self):
+        return self.format if self.format in DEFAULT_FORMATS else DEFAULT_FORMATS[0]
+
     def __str__(self):
-        return self.cent_text()
+        return getattr(self, 'format_{}'.format(self.get_format()))()
 
 
