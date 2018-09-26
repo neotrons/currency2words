@@ -72,6 +72,14 @@ class Currency2Words(object):
         )
         return result
 
+    def format_custom(self, formatter):
+        currency_word, cent_word = self.get_currency_form()
+        data_format = {'nw': self.get_negword(), 'pw': self.get_words_integer_part(),
+                       'pcw': self.lang_object.pluralize(self.integer_part, currency_word), 'sw': self.separator,
+                       'dw': self.get_words_decimal_part(), 'dcw': self.lang_object.pluralize(self.decimal_part, cent_word)}
+
+        return formatter.format(**data_format)
+
     def get_format(self):
         return self.format if self.format in DEFAULT_FORMATS else DEFAULT_FORMATS[0]
 

@@ -21,7 +21,7 @@ a = Currency2Words(42.5, format='text')
 print(a) # cuarenta y dos soles con cincuenta centimos
 
 a = Currency2Words(42.5, format='invoice')
-print(a) # cuarenta y dos con 50/100 centimos
+print(a) # cuarenta y dos con 50/100 soles
 ```
 
 Es posible llamar ambos metodos desde sus clases de renderizado
@@ -30,5 +30,5 @@ Es posible llamar ambos metodos desde sus clases de renderizado
 from currency2words import Currency2Words
 a = Currency2Words(42.5)
 print(a.format_text()) # cuarenta y dos soles con cincuenta centimos
-print(a.format_invoice()) # cuarenta y dos con 50/100 centimos
+print(a.format_invoice()) # cuarenta y dos con 50/100 soles
 ```
