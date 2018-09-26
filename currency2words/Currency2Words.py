@@ -74,9 +74,32 @@ class Currency2Words(object):
 
     def format_custom(self, formatter):
         currency_word, cent_word = self.get_currency_form()
-        data_format = {'nw': self.get_negword(), 'pw': self.get_words_integer_part(),
-                       'pcw': self.lang_object.pluralize(self.integer_part, currency_word), 'sw': self.separator,
-                       'dw': self.get_words_decimal_part(), 'dcw': self.lang_object.pluralize(self.decimal_part, cent_word)}
+
+        data_showt_format = {
+            'n': self.number,
+            'ng': self.get_negword(),
+            'i': self.integer_part,
+            'iw': self.get_words_integer_part(),
+            'ic': self.lang_object.pluralize(self.integer_part, currency_word),
+            's': self.separator,
+            'd': self.decimal_part,
+            'dw': self.get_words_decimal_part(),
+            'dc': self.lang_object.pluralize(self.decimal_part, cent_word)
+        }
+
+        data_format = {
+            'number': self.number,
+            'negword':  self.get_negword(),
+            'integer_part': self.integer_part,
+            'integer_word': self.get_words_integer_part(),
+            'integer_currency': self.lang_object.pluralize(self.integer_part, currency_word),
+            'separator': self.separator,
+            'decimal_part': self.decimal_part,
+            'decimal_word': self.get_words_decimal_part(),
+            'decimal_currency': self.lang_object.pluralize(self.decimal_part, cent_word)
+        }
+
+        data_format.update(data_showt_format)
 
         return formatter.format(**data_format)
 
@@ -85,5 +108,3 @@ class Currency2Words(object):
 
     def __str__(self):
         return getattr(self, 'format_{}'.format(self.get_format()))()
-
-

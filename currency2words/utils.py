@@ -1,3 +1,3 @@
 CURRENCY_FORMS = {
-    'PEN': (('sol', 'soles'), ('centimo', 'centimos')),
+    'PEN': (('sol', 'soles'), ('centimo', 'céntimos')),
 }
